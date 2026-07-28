@@ -19,6 +19,10 @@ npm test
 
 The build is written to `dist/` and contains static files suitable for deployment on Hostinger or another static hosting provider.
 
+Every successful push to `main` also publishes the generated static website to
+the `hostinger` branch. Hostinger's classic Git integration should deploy that
+branch into `public_html`.
+
 ## Project structure
 
 - `src/content.mjs` — product and site content

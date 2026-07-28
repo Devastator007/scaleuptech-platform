@@ -8,6 +8,7 @@ const requiredFiles = [
   "dist/index.html",
   "dist/assets/styles.css",
   "dist/assets/site.js",
+  "dist/.htaccess",
   "dist/robots.txt",
   "dist/sitemap.xml",
   ...products.map((product) => `dist/product/${product.slug}/index.html`),
