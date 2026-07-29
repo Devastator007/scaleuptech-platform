@@ -78,9 +78,10 @@ button { font: inherit; }
 .section-heading { display: grid; grid-template-columns: 1.4fr .6fr; align-items: end; gap: 4rem; margin-bottom: 4rem; }
 .section-heading h2, .approach-copy h2, .statement-section h2, .product-purpose h2 { margin: 0; font-size: clamp(2.5rem, 5vw, 5rem); line-height: 1; letter-spacing: -.06em; font-weight: 600; }
 .section-heading > p { margin: 0; color: var(--ink-soft); line-height: 1.7; }
-.product-grid { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: rgba(255,255,255,.25); }
+.product-grid { display: grid; grid-template-columns: repeat(2, 1fr); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; background: rgba(255,255,255,.25); }
 .product-card { min-height: 33rem; display: flex; flex-direction: column; padding: clamp(1.5rem, 3vw, 2.75rem); border-right: 1px solid var(--line); transition: background .25s ease, transform .25s ease; }
-.product-card:last-child { border-right: 0; }
+.product-card:nth-child(2n) { border-right: 0; }
+.product-card:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
 .product-card:hover { background: var(--paper-light); }
 .product-number { margin-bottom: auto; color: #357b66; font-family: Georgia, serif; font-size: 1.1rem; }
 .product-card h3 { margin: 0 0 1rem; font-size: 2rem; letter-spacing: -.05em; }
@@ -125,6 +126,20 @@ button { font: inherit; }
 .related-grid a { display: flex; justify-content: space-between; padding: 2rem 1rem 2rem 0; border-bottom: 1px solid var(--line); text-decoration: none; font-size: clamp(1.4rem, 3vw, 2.5rem); font-weight: 650; letter-spacing: -.04em; }
 .related-grid a:first-child { margin-right: 2rem; }
 
+.legal-page { padding: clamp(4rem, 8vw, 8rem) clamp(1.25rem, 6vw, 7rem); }
+.legal-hero { max-width: 58rem; padding-bottom: clamp(3rem, 7vw, 6rem); }
+.legal-hero h1 { margin: 0; font-size: clamp(3.5rem, 8vw, 7rem); line-height: .95; letter-spacing: -.07em; }
+.legal-hero > p:not(.eyebrow) { max-width: 44rem; margin: 1.5rem 0; color: var(--ink-soft); font-size: 1.1rem; line-height: 1.7; }
+.legal-hero small { color: var(--ink-soft); }
+.legal-layout { display: grid; grid-template-columns: minmax(11rem, .35fr) minmax(0, 1fr); gap: clamp(3rem, 9vw, 9rem); align-items: start; }
+.legal-nav { position: sticky; top: 2rem; display: grid; border-top: 1px solid var(--line); }
+.legal-nav a { padding: 1rem 0; border-bottom: 1px solid var(--line); color: var(--ink-soft); text-decoration: none; font-size: .9rem; font-weight: 700; }
+.legal-nav a[aria-current="page"] { color: var(--ink); }
+.legal-content { max-width: 52rem; }
+.legal-content section { padding: 0 0 2.5rem; margin-bottom: 2.5rem; border-bottom: 1px solid var(--line); }
+.legal-content h2 { margin: 0 0 1rem; font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -.035em; }
+.legal-content p { margin: 0; color: var(--ink-soft); line-height: 1.85; }
+
 [dir="rtl"] { font-family: Tahoma, Arial, sans-serif; }
 [dir="rtl"] .site-header, [dir="rtl"] .hero, [dir="rtl"] .section, [dir="rtl"] .site-footer, [dir="rtl"] .product-hero { text-align: right; }
 [dir="rtl"] .hero h1, [dir="rtl"] .section-heading h2, [dir="rtl"] .approach-copy h2, [dir="rtl"] .statement-section h2, [dir="rtl"] .product-purpose h2, [dir="rtl"] .product-hero h1 { letter-spacing: -.025em; }
@@ -144,6 +159,7 @@ button { font: inherit; }
   .section-heading, .product-purpose { grid-template-columns: 1fr; gap: 2rem; }
   .product-grid { grid-template-columns: 1fr; }
   .product-card { min-height: 29rem; border-right: 0; border-bottom: 1px solid var(--line); }
+  .product-card:nth-child(-n+2) { border-bottom: 1px solid var(--line); }
   [dir="rtl"] .product-card { border-left: 0; }
   .product-card:last-child { border-bottom: 0; }
 }
@@ -162,6 +178,8 @@ button { font: inherit; }
   .footer-links { flex-direction: column; gap: .8rem; }
   .copyright { grid-column: auto; margin-top: 1rem; }
   .related-grid { grid-template-columns: 1fr; }
+  .legal-layout { grid-template-columns: 1fr; }
+  .legal-nav { position: static; }
   .related-grid a:first-child { margin: 0; }
   [dir="rtl"] .related-grid a:first-child { margin: 0; }
 }

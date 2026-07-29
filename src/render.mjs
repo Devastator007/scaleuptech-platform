@@ -1,4 +1,4 @@
-import { products, site } from "./content.mjs";
+import { legalPages, products, site } from "./content.mjs";
 
 const html = String.raw;
 
@@ -65,6 +65,9 @@ function footer() {
       <div class="footer-links">
         <a href="mailto:${site.email}">${site.email}</a>
         <a href="/#products" data-en="Products" data-ar="المنتجات">Products</a>
+        <a href="/privacy/" data-en="Privacy" data-ar="الخصوصية">Privacy</a>
+        <a href="/terms/" data-en="Terms" data-ar="الشروط">Terms</a>
+        <a href="/security/" data-en="Security" data-ar="الأمان">Security</a>
       </div>
       <p class="copyright">© <span data-current-year></span> ScaleUp Tech</p>
     </footer>
@@ -223,7 +226,12 @@ export function renderProduct(product) {
               <h1>${product.name}</h1>
               <h2 data-en="${product.title.en}" data-ar="${product.title.ar}">${product.title.en}</h2>
               <p class="hero-lead" data-en="${product.description.en}" data-ar="${product.description.ar}">${product.description.en}</p>
-              <a class="button" href="mailto:${site.email}?subject=${encodeURIComponent(`${product.name} enquiry`)}" data-en="Get started" data-ar="ابدأ الآن">Get started</a>
+              <a
+                class="button"
+                href="${product.appPath || `mailto:${site.email}?subject=${encodeURIComponent(`${product.name} enquiry`)}`}"
+                data-en="${product.appPath ? `Open ${product.name}` : "Get started"}"
+                data-ar="${product.appPath ? `افتح ${product.name}` : "ابدأ الآن"}"
+              >${product.appPath ? `Open ${product.name}` : "Get started"}</a>
             </div>
             <div class="product-panel">
               <p data-en="What it unlocks" data-ar="ما الذي يتيحه">What it unlocks</p>
@@ -246,6 +254,46 @@ export function renderProduct(product) {
             ${related.map((item) => `<a href="/product/${item.slug}/"><span>${item.name}</span><span aria-hidden="true">↗</span></a>`).join("")}
           </div>
         </section>
+      </main>
+    `,
+  });
+}
+
+export function renderLegal(page) {
+  const sections = page.sections.map((section) => html`
+    <section>
+      <h2 data-en="${section.heading.en}" data-ar="${section.heading.ar}">${section.heading.en}</h2>
+      <p data-en="${section.body.en}" data-ar="${section.body.ar}">${section.body.en}</p>
+    </section>
+  `).join("");
+
+  return shell({
+    title: `${page.title.en} | ScaleUp Tech`,
+    description: page.description.en,
+    path: `/${page.slug}/`,
+    body: html`
+      <main id="main" class="legal-page">
+        <header class="legal-hero">
+          <p class="eyebrow" data-en="Trust center" data-ar="مركز الثقة">Trust center</p>
+          <h1 data-en="${page.title.en}" data-ar="${page.title.ar}">${page.title.en}</h1>
+          <p data-en="${page.description.en}" data-ar="${page.description.ar}">${page.description.en}</p>
+          <small data-en="Last updated: 29 July 2026" data-ar="آخر تحديث: 29 يوليو 2026">Last updated: 29 July 2026</small>
+        </header>
+        <div class="legal-layout">
+          <nav class="legal-nav" aria-label="Legal documents">
+            ${legalPages.map((item) => `<a href="/${item.slug}/"${item.slug === page.slug ? ' aria-current="page"' : ""} data-en="${item.title.en}" data-ar="${item.title.ar}">${item.title.en}</a>`).join("")}
+          </nav>
+          <article class="legal-content">
+            ${sections}
+            <section>
+              <h2 data-en="Contact" data-ar="التواصل">Contact</h2>
+              <p>
+                <span data-en="Questions about this document can be sent to" data-ar="يمكن إرسال الأسئلة المتعلقة بهذه الوثيقة إلى">Questions about this document can be sent to</span>
+                <a href="mailto:${site.email}">${site.email}</a>.
+              </p>
+            </section>
+          </article>
+        </div>
       </main>
     `,
   });

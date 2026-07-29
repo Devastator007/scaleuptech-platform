@@ -1,7 +1,7 @@
 import { access, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { products } from "../src/content.mjs";
+import { legalPages, products } from "../src/content.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const requiredFiles = [
@@ -12,12 +12,17 @@ const requiredFiles = [
   "dist/robots.txt",
   "dist/sitemap.xml",
   ...products.map((product) => `dist/product/${product.slug}/index.html`),
+  ...legalPages.map((page) => `dist/${page.slug}/index.html`),
 ];
 
 await Promise.all(requiredFiles.map((file) => access(resolve(root, file))));
 
 const pages = await Promise.all(
-  ["dist/index.html", ...products.map((product) => `dist/product/${product.slug}/index.html`)]
+  [
+    "dist/index.html",
+    ...products.map((product) => `dist/product/${product.slug}/index.html`),
+    ...legalPages.map((page) => `dist/${page.slug}/index.html`),
+  ]
     .map(async (file) => ({ file, source: await readFile(resolve(root, file), "utf8") })),
 );
 
