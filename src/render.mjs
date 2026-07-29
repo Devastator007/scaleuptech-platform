@@ -1,6 +1,7 @@
 import { articles, legalPages, marketingPages, products, site } from "./content.mjs";
 
 const html = String.raw;
+const assetVersion = "20260729-03";
 
 function head({ title, description, path = "/" }) {
   const canonical = `${site.url}${path}`;
@@ -10,17 +11,24 @@ function head({ title, description, path = "/" }) {
     <title>${title}</title>
     <meta name="description" content="${description}">
     ${path === "/account/" || path === "/admin/" ? '<meta name="robots" content="noindex,nofollow">' : '<meta name="robots" content="index,follow,max-image-preview:large">'}
-    <meta name="theme-color" content="#081a16">
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-    <link rel="apple-touch-icon" href="/apple-touch-icon.svg">
-    <link rel="manifest" href="/manifest.webmanifest">
+    <meta name="theme-color" content="#0f172a">
+    <link rel="icon" href="/favicon-180.png?v=${assetVersion}" type="image/png">
+    <link rel="apple-touch-icon" href="/favicon-180.png?v=${assetVersion}">
+    <link rel="manifest" href="/manifest.webmanifest?v=${assetVersion}">
+    <link rel="preload" href="/scaleup-logo-128.webp?v=${assetVersion}" as="image" type="image/webp">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Alexandria:wght@400;500;600;700;800&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="canonical" href="${canonical}">
     <meta property="og:type" content="website">
     <meta property="og:title" content="${title}">
     <meta property="og:description" content="${description}">
     <meta property="og:url" content="${canonical}">
     <meta property="og:site_name" content="${site.brand}">
-    <link rel="stylesheet" href="/assets/styles.css">
+    <meta property="og:image" content="${site.url}/scaleup-logo-640.webp">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="${site.url}/scaleup-logo-640.webp">
+    <link rel="stylesheet" href="/assets/styles.css?v=${assetVersion}">
     <script type="application/ld+json">${JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Organization",
@@ -41,7 +49,7 @@ function header() {
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
       <a class="brand" href="/" aria-label="ScaleUp Tech home">
-        <span class="brand-mark" aria-hidden="true">S</span>
+        <span class="brand-mark"><img src="/scaleup-logo-128.webp?v=${assetVersion}" width="46" height="46" alt=""></span>
         <span>ScaleUp <strong>Tech</strong></span>
       </a>
       <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
@@ -70,7 +78,7 @@ function footer() {
     <footer class="site-footer">
       <div>
         <a class="brand brand-footer" href="/">
-          <span class="brand-mark" aria-hidden="true">S</span>
+          <span class="brand-mark"><img src="/scaleup-logo-128.webp?v=${assetVersion}" width="46" height="46" alt=""></span>
           <span>ScaleUp <strong>Tech</strong></span>
         </a>
         <p data-en="Practical technology for ambitious businesses." data-ar="تقنية عملية للشركات الطموحة.">Practical technology for ambitious businesses.</p>
@@ -94,7 +102,7 @@ function footer() {
       <span aria-hidden="true">◉</span>
       <span data-en="WhatsApp" data-ar="واتساب">WhatsApp</span>
     </a>
-    <script src="/assets/site.js" defer></script>
+    <script src="/assets/site.js?v=${assetVersion}" defer></script>
   `;
 }
 
@@ -312,7 +320,7 @@ export function renderAccountPage(admin = false) {
       : "Register, sign in, manage subscriptions, and submit manual payments for ScaleUp Tech products.",
     path,
     body: html`<main id="main" class="account-page"><div class="account-app" data-account-app="${admin ? "admin" : "account"}"><section class="account-card"><p>Loading secure account…</p></section></div></main>
-      <script src="/assets/account.js" defer></script>`,
+      <script src="/assets/account.js?v=${assetVersion}" defer></script>`,
   });
 }
 

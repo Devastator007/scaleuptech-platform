@@ -49,6 +49,9 @@ for (const article of articles) {
 await cp(resolve(root, "src", "styles.css"), resolve(dist, "assets", "styles.css"));
 await cp(resolve(root, "src", "site.js"), resolve(dist, "assets", "site.js"));
 await cp(resolve(root, "src", "account.js"), resolve(dist, "assets", "account.js"));
+await cp(resolve(root, "src", "assets", "scaleup-logo-128.webp"), resolve(dist, "scaleup-logo-128.webp"));
+await cp(resolve(root, "src", "assets", "scaleup-logo-640.webp"), resolve(dist, "scaleup-logo-640.webp"));
+await cp(resolve(root, "src", "assets", "favicon-180.png"), resolve(dist, "favicon-180.png"));
 await mkdir(resolve(dist, "api"), { recursive: true });
 await cp(resolve(root, "src", "backend", "bootstrap.php"), resolve(dist, "api", "bootstrap.php"));
 await cp(resolve(root, "src", "backend", "account.php"), resolve(dist, "api", "account.php"));
@@ -67,7 +70,7 @@ await writeFile(resolve(dist, "manifest.webmanifest"), JSON.stringify({
   display: "standalone",
   background_color: "#f3f0e8",
   theme_color: "#081a16",
-  icons: [{ src: "/favicon.svg", sizes: "any", type: "image/svg+xml", purpose: "any maskable" }],
+  icons: [{ src: "/favicon-180.png", sizes: "180x180", type: "image/png", purpose: "any" }],
 }, null, 2));
 
 const routes = [
@@ -103,12 +106,17 @@ RedirectMatch 404 ^/storage(?:/|$)
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
+  <FilesMatch "\.(?:html|css|js)$">
+    Header set Cache-Control "no-cache, must-revalidate"
+  </FilesMatch>
 </IfModule>
 
 <IfModule mod_expires.c>
   ExpiresActive On
-  ExpiresByType text/css "access plus 7 days"
-  ExpiresByType application/javascript "access plus 7 days"
+  ExpiresByType text/css "access plus 0 seconds"
+  ExpiresByType application/javascript "access plus 0 seconds"
+  ExpiresByType image/png "access plus 30 days"
+  ExpiresByType image/webp "access plus 30 days"
 </IfModule>
 `);
 

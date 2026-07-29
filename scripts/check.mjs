@@ -22,6 +22,9 @@ const requiredFiles = [
   "dist/favicon.svg",
   "dist/apple-touch-icon.svg",
   "dist/manifest.webmanifest",
+  "dist/scaleup-logo-128.webp",
+  "dist/scaleup-logo-640.webp",
+  "dist/favicon-180.png",
   ...products.map((product) => `dist/product/${product.slug}/index.html`),
   ...legalPages.map((page) => `dist/${page.slug}/index.html`),
   ...marketingPages.map((page) => `dist/${page.slug}/index.html`),
@@ -48,7 +51,7 @@ const pages = await Promise.all(
 );
 
 for (const { file, source } of pages) {
-  for (const marker of ["<title>", 'name="description"', 'rel="canonical"', 'rel="icon"', 'lang="en"', 'id="main"', `https://wa.me/${site.whatsapp}`]) {
+  for (const marker of ["<title>", 'name="description"', 'rel="canonical"', 'favicon-180.png?v=', 'scaleup-logo-128.webp?v=', 'family=Alexandria', 'styles.css?v=', 'lang="en"', 'id="main"', `https://wa.me/${site.whatsapp}`]) {
     if (!source.includes(marker)) throw new Error(`${file} is missing ${marker}`);
   }
 
