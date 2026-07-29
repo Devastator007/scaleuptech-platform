@@ -11,6 +11,7 @@ const requiredFiles = [
   "dist/assets/account.js",
   "dist/api/bootstrap.php",
   "dist/api/account.php",
+  "dist/api/provision-admin.php",
   "dist/account/index.html",
   "dist/admin/index.html",
   "dist/product/job-autoapply/index.html",
@@ -67,6 +68,7 @@ for (const address of [site.email, site.supportEmail, site.securityEmail]) {
 
 const accountApi = await readFile(resolve(root, "dist/api/account.php"), "utf8");
 const bootstrap = await readFile(resolve(root, "dist/api/bootstrap.php"), "utf8");
+const provisionAdmin = await readFile(resolve(root, "dist/api/provision-admin.php"), "utf8");
 for (const marker of [
   "password_hash(", "password_verify(", "session_regenerate_id(true)",
   "require_csrf()", "require_user(true)", "'customer'", "admin_payment",
@@ -78,6 +80,9 @@ for (const forbidden of ["admin_email()", "role=\"admin\"", "SUPABASE_SERVICE_RO
 }
 if (!bootstrap.includes("'secure' => true") || !bootstrap.includes("'httponly' => true")) {
   throw new Error("Account session cookies are not secure");
+}
+if (!provisionAdmin.includes("PHP_SAPI !== 'cli'") || !provisionAdmin.includes('UPDATE users SET role="admin"')) {
+  throw new Error("Admin provisioning must be CLI-only and persist the role server-side");
 }
 
 if (articles.length !== products.length * 4) {

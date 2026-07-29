@@ -52,6 +52,7 @@ await cp(resolve(root, "src", "account.js"), resolve(dist, "assets", "account.js
 await mkdir(resolve(dist, "api"), { recursive: true });
 await cp(resolve(root, "src", "backend", "bootstrap.php"), resolve(dist, "api", "bootstrap.php"));
 await cp(resolve(root, "src", "backend", "account.php"), resolve(dist, "api", "account.php"));
+await cp(resolve(root, "src", "backend", "provision-admin.php"), resolve(dist, "api", "provision-admin.php"));
 await mkdir(resolve(dist, "account"), { recursive: true });
 await writeFile(resolve(dist, "account", "index.html"), renderAccountPage(false));
 await mkdir(resolve(dist, "admin"), { recursive: true });
