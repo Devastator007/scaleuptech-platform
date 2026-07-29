@@ -60,6 +60,32 @@ await mkdir(resolve(dist, "account"), { recursive: true });
 await writeFile(resolve(dist, "account", "index.html"), renderAccountPage(false));
 await mkdir(resolve(dist, "admin"), { recursive: true });
 await writeFile(resolve(dist, "admin", "index.html"), renderAccountPage(true));
+await mkdir(resolve(dist, "app", "jobpilot"), { recursive: true });
+await writeFile(resolve(dist, "app", "jobpilot", "index.html"), `<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <meta name="referrer" content="no-referrer">
+  <title>Opening JobPilot | ScaleUp Tech</title>
+</head>
+<body>
+  <main>
+    <h1>Opening JobPilot…</h1>
+    <p>Your secure sign-in session is being transferred to the application.</p>
+    <noscript><p>JavaScript is required to complete secure sign-in.</p></noscript>
+  </main>
+  <script>
+    (() => {
+      const destination = new URL("https://devastator007.github.io/ScaleUp-JobPilot/");
+      destination.search = window.location.search;
+      destination.hash = window.location.hash;
+      window.location.replace(destination.toString());
+    })();
+  </script>
+</body>
+</html>`);
 const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#081a16"/><path d="M43 19H28c-6 0-10 3-10 8 0 12 24 5 24 13 0 3-3 5-8 5H19" fill="none" stroke="#c9f564" stroke-width="7" stroke-linecap="round"/></svg>`;
 await writeFile(resolve(dist, "favicon.svg"), favicon);
 await writeFile(resolve(dist, "apple-touch-icon.svg"), favicon);
@@ -82,6 +108,7 @@ const routes = [
   "/insights/",
   "/account/",
   "/admin/",
+  "/app/jobpilot/",
   ...articles.map((article) => `/insights/${article.slug}/`),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>

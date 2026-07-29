@@ -14,6 +14,7 @@ const requiredFiles = [
   "dist/api/provision-admin.php",
   "dist/account/index.html",
   "dist/admin/index.html",
+  "dist/app/jobpilot/index.html",
   "dist/product/job-autoapply/index.html",
   "dist/product/scale-cx/index.html",
   "dist/.htaccess",
@@ -77,6 +78,18 @@ for (const page of legalPages) {
 const contact = await readFile(resolve(root, "dist/contact/index.html"), "utf8");
 for (const address of [site.email, site.supportEmail, site.securityEmail]) {
   if (!contact.includes(`mailto:${address}`)) throw new Error(`Contact page is missing ${address}`);
+}
+
+const jobPilotCallback = await readFile(resolve(root, "dist/app/jobpilot/index.html"), "utf8");
+for (const marker of [
+  'meta name="robots" content="noindex,nofollow"',
+  'meta name="referrer" content="no-referrer"',
+  'new URL("https://devastator007.github.io/ScaleUp-JobPilot/")',
+  "destination.search = window.location.search",
+  "destination.hash = window.location.hash",
+  "window.location.replace(destination.toString())",
+]) {
+  if (!jobPilotCallback.includes(marker)) throw new Error(`JobPilot callback bridge is missing ${marker}`);
 }
 
 const accountApi = await readFile(resolve(root, "dist/api/account.php"), "utf8");
