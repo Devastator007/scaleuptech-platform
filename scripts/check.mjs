@@ -64,6 +64,16 @@ for (const { file, source } of pages) {
   }
 }
 
+for (const page of legalPages) {
+  const source = await readFile(resolve(root, `dist/${page.slug}/index.html`), "utf8");
+  if (!source.includes(`mailto:${site.supportEmail}`)) {
+    throw new Error(`${page.slug} must direct document questions to product support`);
+  }
+  if (source.includes(`mailto:${site.email}`)) {
+    throw new Error(`${page.slug} must not direct document questions to sales`);
+  }
+}
+
 const contact = await readFile(resolve(root, "dist/contact/index.html"), "utf8");
 for (const address of [site.email, site.supportEmail, site.securityEmail]) {
   if (!contact.includes(`mailto:${address}`)) throw new Error(`Contact page is missing ${address}`);
@@ -96,10 +106,11 @@ const styles = await readFile(resolve(root, "dist/assets/styles.css"), "utf8");
 for (const marker of [
   '[dir="rtl"] body { line-height: 1.85; }',
   '[dir="rtl"] .hero h1 {',
-  "line-height: 1.22;",
+  "line-height: 1.34;",
   "text-wrap: balance;",
   "letter-spacing: 0;",
-  "font-size: clamp(2.7rem, 12.5vw, 4.25rem);",
+  "font-size: clamp(2.45rem, 10.5vw, 3.35rem);",
+  ".contact-phone { direction: ltr; unicode-bidi: isolate;",
 ]) {
   if (!styles.includes(marker)) throw new Error(`RTL typography system is missing ${marker}`);
 }

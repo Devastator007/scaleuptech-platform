@@ -1,7 +1,7 @@
 import { articles, legalPages, marketingPages, products, site } from "./content.mjs";
 
 const html = String.raw;
-const assetVersion = "20260729-04";
+const assetVersion = "20260729-05";
 
 function head({ title, description, path = "/" }) {
   const canonical = `${site.url}${path}`;
@@ -275,7 +275,7 @@ export function renderContact() {
         <a class="contact-card" href="mailto:${site.email}"><span data-en="Sales and projects" data-ar="المبيعات والمشاريع">Sales and projects</span><strong>${site.email}</strong></a>
         <a class="contact-card" href="mailto:${site.supportEmail}"><span data-en="Product support" data-ar="دعم المنتجات">Product support</span><strong>${site.supportEmail}</strong></a>
         <a class="contact-card" href="mailto:${site.securityEmail}"><span data-en="Security reports" data-ar="بلاغات الأمان">Security reports</span><strong>${site.securityEmail}</strong></a>
-        <a class="contact-card" href="https://wa.me/${site.whatsapp}" target="_blank" rel="noopener noreferrer"><span data-en="WhatsApp and phone" data-ar="واتساب والهاتف">WhatsApp and phone</span><strong>${site.phone}</strong></a>
+        <a class="contact-card" href="https://wa.me/${site.whatsapp}" target="_blank" rel="noopener noreferrer"><span data-en="WhatsApp and phone" data-ar="واتساب والهاتف">WhatsApp and phone</span><strong class="contact-phone" dir="ltr">${site.phone}</strong></a>
       </section>
     </main>`,
   });
@@ -411,7 +411,7 @@ export function renderLegal(page) {
               <h2 data-en="Contact" data-ar="التواصل">Contact</h2>
               <p>
                 <span data-en="Questions about this document can be sent to" data-ar="يمكن إرسال الأسئلة المتعلقة بهذه الوثيقة إلى">Questions about this document can be sent to</span>
-                <a href="mailto:${site.email}">${site.email}</a>.
+                <a href="mailto:${site.supportEmail}">${site.supportEmail}</a>.
               </p>
             </section>
           </article>
