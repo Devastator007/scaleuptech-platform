@@ -1,6 +1,10 @@
 export const site = {
   url: "https://scaleuptech.org",
-  email: "hello@scaleuptech.org",
+  email: "sales@scaleuptech.org",
+  supportEmail: "support@scaleuptech.org",
+  securityEmail: "security@scaleuptech.org",
+  phone: "+20 106 933 8013",
+  whatsapp: "201069338013",
   brand: "ScaleUp Tech",
 };
 
@@ -216,3 +220,104 @@ export const legalPages = [
     ],
   },
 ];
+
+export const marketingPages = [
+  {
+    slug: "about",
+    title: { en: "Technology built around real operations", ar: "تقنية مبنية حول العمليات الحقيقية" },
+    description: {
+      en: "ScaleUp Tech turns operational problems into focused software for growing businesses.",
+      ar: "تحوّل ScaleUp Tech المشكلات التشغيلية إلى برمجيات مركزة للشركات النامية.",
+    },
+    items: [
+      { en: "We begin with the workflow, constraint, and measurable outcome—not a fashionable feature list.", ar: "نبدأ بمسار العمل والقيد والنتيجة القابلة للقياس، وليس بقائمة ميزات رائجة." },
+      { en: "Our portfolio serves career growth, customer operations, sales execution, and pharmacy control.", ar: "تخدم منتجاتنا التطور المهني وعمليات العملاء وتنفيذ المبيعات وإدارة الصيدليات." },
+      { en: "Every release is designed for clarity, adoption, security, and responsible scale.", ar: "يُصمم كل إصدار للوضوح وسهولة التبني والأمان والتوسع المسؤول." },
+    ],
+  },
+  {
+    slug: "services",
+    title: { en: "Software and automation services", ar: "خدمات البرمجيات والأتمتة" },
+    description: {
+      en: "Focused delivery for websites, business systems, AI automation, integrations, and ongoing support.",
+      ar: "تنفيذ مركز للمواقع وأنظمة الأعمال وأتمتة الذكاء الاصطناعي والتكاملات والدعم المستمر.",
+    },
+    items: [
+      { en: "Websites and e-commerce experiences designed for conversion, speed, accessibility, and search visibility.", ar: "مواقع ومتاجر إلكترونية مصممة للتحويل والسرعة وسهولة الوصول والظهور في البحث." },
+      { en: "CRM, ERP, workflow, and reporting systems aligned with the way your team actually operates.", ar: "أنظمة CRM وERP ومسارات العمل والتقارير بما يتوافق مع طريقة تشغيل فريقك فعلياً." },
+      { en: "AI automation and integrations that remove repetitive work while preserving human control.", ar: "أتمتة وتكاملات بالذكاء الاصطناعي تقلل العمل المتكرر مع الحفاظ على التحكم البشري." },
+      { en: "Product support, improvement cycles, security review, and performance optimization.", ar: "دعم المنتجات ودورات التحسين ومراجعة الأمان وتحسين الأداء." },
+    ],
+  },
+  {
+    slug: "solutions",
+    title: { en: "Solutions for growing operations", ar: "حلول للعمليات النامية" },
+    description: {
+      en: "Practical systems for sales, service, inventory, workforce, and digital growth.",
+      ar: "أنظمة عملية للمبيعات والخدمة والمخزون والقوى العاملة والنمو الرقمي.",
+    },
+    items: [
+      { en: "Customer operations: cases, service levels, quality signals, and performance visibility.", ar: "عمليات العملاء: الحالات ومستويات الخدمة ومؤشرات الجودة ورؤية الأداء." },
+      { en: "Sales operations: lead ownership, pipeline control, follow-up discipline, and forecasting.", ar: "عمليات المبيعات: ملكية العملاء المحتملين وضبط المسار والمتابعة والتوقعات." },
+      { en: "Retail and pharmacy: inventory visibility, branch controls, purchasing, and daily decisions.", ar: "التجزئة والصيدليات: رؤية المخزون وضبط الفروع والمشتريات والقرارات اليومية." },
+      { en: "Digital growth: fast bilingual experiences, SEO foundations, analytics, and conversion journeys.", ar: "النمو الرقمي: تجارب ثنائية اللغة سريعة وأساسيات SEO والتحليلات ومسارات التحويل." },
+    ],
+  },
+  {
+    slug: "pricing",
+    title: { en: "Pricing that matches the work", ar: "تسعير يناسب نطاق العمل" },
+    description: {
+      en: "Product subscriptions use clear published terms; custom work is scoped around outcomes and delivery risk.",
+      ar: "تستخدم اشتراكات المنتجات شروطاً واضحة، بينما يُسعّر العمل المخصص حسب النتائج ومخاطر التنفيذ.",
+    },
+    items: [
+      { en: "JobPilot starts at USD 5 per month, with a 20% discount for annual subscriptions.", ar: "يبدأ JobPilot من 5 دولارات شهرياً مع خصم 20% للاشتراك السنوي." },
+      { en: "Business products are priced by users, workflow scope, integrations, data migration, and support level.", ar: "تُسعّر منتجات الأعمال حسب المستخدمين ونطاق العمل والتكاملات وترحيل البيانات ومستوى الدعم." },
+      { en: "Custom projects begin with a written scope, milestones, acceptance criteria, and transparent change control.", ar: "تبدأ المشاريع المخصصة بنطاق مكتوب ومراحل ومعايير قبول وضبط واضح للتغييرات." },
+    ],
+  },
+  {
+    slug: "faq",
+    title: { en: "Frequently asked questions", ar: "الأسئلة الشائعة" },
+    description: {
+      en: "Straight answers about products, implementation, security, support, and payments.",
+      ar: "إجابات واضحة حول المنتجات والتنفيذ والأمان والدعم والمدفوعات.",
+    },
+    items: [
+      { en: "Can I try a product? Availability differs by product. Contact sales and we will confirm the current access path without promising unavailable features.", ar: "هل يمكن تجربة المنتج؟ يختلف التوفر حسب المنتج. تواصل مع المبيعات وسنؤكد مسار الوصول الحالي دون وعود بميزات غير متاحة." },
+      { en: "Do you support Arabic? Yes. The platform and relevant products are designed for Arabic and English, including right-to-left layouts.", ar: "هل تدعمون العربية؟ نعم. صُممت المنصة والمنتجات المناسبة للعربية والإنجليزية بما في ذلك اتجاه اليمين إلى اليسار." },
+      { en: "How is data protected? Controls include encrypted transport, least-privilege access, separated secrets, validation, and product-specific tests.", ar: "كيف تُحمى البيانات؟ تشمل الضوابط تشفير النقل وأقل صلاحية وفصل الأسرار والتحقق واختبارات خاصة بكل منتج." },
+      { en: "How do I get support? Email support@scaleuptech.org for product help or use WhatsApp for an initial conversation.", ar: "كيف أحصل على الدعم؟ راسل support@scaleuptech.org لدعم المنتج أو استخدم واتساب لبدء المحادثة." },
+    ],
+  },
+];
+
+const articleSeeds = [
+  ["jobpilot", "Build a job-search system that stays human", "ابنِ نظام بحث عن عمل يحافظ على القرار البشري"],
+  ["jobpilot", "Track applications without losing focus", "تابع طلبات التوظيف دون فقدان التركيز"],
+  ["jobpilot", "Use automation without lowering application quality", "استخدم الأتمتة دون خفض جودة التقديم"],
+  ["jobpilot", "Measure what improves your job-search results", "قس ما يحسن نتائج بحثك عن وظيفة"],
+  ["crm", "Choose a CRM your team will actually use", "اختر CRM يستخدمه فريقك فعلياً"],
+  ["crm", "Design a sales pipeline around real decisions", "صمم مسار مبيعات حول القرارات الفعلية"],
+  ["crm", "Fix follow-up gaps before adding automation", "عالج فجوات المتابعة قبل إضافة الأتمتة"],
+  ["crm", "Prepare clean data for CRM migration", "جهز بيانات نظيفة لترحيل CRM"],
+  ["scalecx", "Turn service-level data into daily action", "حوّل بيانات مستوى الخدمة إلى إجراءات يومية"],
+  ["scalecx", "Connect customer signals to root causes", "اربط إشارات العملاء بالأسباب الجذرية"],
+  ["scalecx", "Build an escalation process teams can trust", "ابنِ عملية تصعيد تثق بها الفرق"],
+  ["scalecx", "Balance speed, quality, and customer effort", "وازن بين السرعة والجودة ومجهود العميل"],
+  ["pharmacy-manager", "Improve pharmacy stock visibility across branches", "حسّن رؤية مخزون الصيدليات عبر الفروع"],
+  ["pharmacy-manager", "Reduce stock-outs without overstocking", "قلل نفاد المخزون دون تخزين زائد"],
+  ["pharmacy-manager", "Build a useful daily pharmacy dashboard", "أنشئ لوحة متابعة يومية مفيدة للصيدلية"],
+  ["pharmacy-manager", "Standardize branch controls without slowing teams", "وحّد ضوابط الفروع دون إبطاء الفرق"],
+];
+
+export const articles = articleSeeds.map(([product, en, ar], index) => ({
+  product,
+  slug: en.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, ""),
+  title: { en, ar },
+  description: {
+    en: `A practical guide from ScaleUp Tech with clear steps, useful measures, and common mistakes to avoid.`,
+    ar: "دليل عملي من ScaleUp Tech بخطوات واضحة ومقاييس مفيدة وأخطاء شائعة يجب تجنبها.",
+  },
+  readTime: index % 3 + 4,
+}));

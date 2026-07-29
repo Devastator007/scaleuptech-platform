@@ -1,8 +1,8 @@
 import { cp, mkdir, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { legalPages, products, site } from "../src/content.mjs";
-import { renderHome, renderLegal, renderProduct } from "../src/render.mjs";
+import { articles, legalPages, marketingPages, products, site } from "../src/content.mjs";
+import { renderArticle, renderContact, renderHome, renderInsights, renderLegal, renderMarketing, renderProduct } from "../src/render.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = resolve(root, "dist");
@@ -23,13 +23,46 @@ for (const page of legalPages) {
   await writeFile(resolve(pageDirectory, "index.html"), renderLegal(page));
 }
 
+for (const page of marketingPages) {
+  const pageDirectory = resolve(dist, page.slug);
+  await mkdir(pageDirectory, { recursive: true });
+  await writeFile(resolve(pageDirectory, "index.html"), renderMarketing(page));
+}
+
+await mkdir(resolve(dist, "contact"), { recursive: true });
+await writeFile(resolve(dist, "contact", "index.html"), renderContact());
+await mkdir(resolve(dist, "insights"), { recursive: true });
+await writeFile(resolve(dist, "insights", "index.html"), renderInsights());
+
+for (const article of articles) {
+  const articleDirectory = resolve(dist, "insights", article.slug);
+  await mkdir(articleDirectory, { recursive: true });
+  await writeFile(resolve(articleDirectory, "index.html"), renderArticle(article));
+}
+
 await cp(resolve(root, "src", "styles.css"), resolve(dist, "assets", "styles.css"));
 await cp(resolve(root, "src", "site.js"), resolve(dist, "assets", "site.js"));
+const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#081a16"/><path d="M43 19H28c-6 0-10 3-10 8 0 12 24 5 24 13 0 3-3 5-8 5H19" fill="none" stroke="#c9f564" stroke-width="7" stroke-linecap="round"/></svg>`;
+await writeFile(resolve(dist, "favicon.svg"), favicon);
+await writeFile(resolve(dist, "apple-touch-icon.svg"), favicon);
+await writeFile(resolve(dist, "manifest.webmanifest"), JSON.stringify({
+  name: site.brand,
+  short_name: "ScaleUp",
+  start_url: "/",
+  display: "standalone",
+  background_color: "#f3f0e8",
+  theme_color: "#081a16",
+  icons: [{ src: "/favicon.svg", sizes: "any", type: "image/svg+xml", purpose: "any maskable" }],
+}, null, 2));
 
 const routes = [
   "/",
   ...products.map((product) => `/product/${product.slug}/`),
   ...legalPages.map((page) => `/${page.slug}/`),
+  ...marketingPages.map((page) => `/${page.slug}/`),
+  "/contact/",
+  "/insights/",
+  ...articles.map((article) => `/insights/${article.slug}/`),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">

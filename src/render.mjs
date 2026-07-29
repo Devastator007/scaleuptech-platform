@@ -1,4 +1,4 @@
-import { legalPages, products, site } from "./content.mjs";
+import { articles, legalPages, marketingPages, products, site } from "./content.mjs";
 
 const html = String.raw;
 
@@ -10,6 +10,9 @@ function head({ title, description, path = "/" }) {
     <title>${title}</title>
     <meta name="description" content="${description}">
     <meta name="theme-color" content="#081a16">
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.svg">
+    <link rel="manifest" href="/manifest.webmanifest">
     <link rel="canonical" href="${canonical}">
     <meta property="og:type" content="website">
     <meta property="og:title" content="${title}">
@@ -23,6 +26,11 @@ function head({ title, description, path = "/" }) {
       name: site.brand,
       url: site.url,
       email: site.email,
+      telephone: site.phone,
+      contactPoint: [
+        { "@type": "ContactPoint", contactType: "sales", email: site.email, telephone: site.phone, availableLanguage: ["Arabic", "English"] },
+        { "@type": "ContactPoint", contactType: "customer support", email: site.supportEmail, availableLanguage: ["Arabic", "English"] },
+      ],
     })}</script>
   `;
 }
@@ -41,12 +49,13 @@ function header() {
       </button>
       <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
         <a href="/#products" data-en="Products" data-ar="المنتجات">Products</a>
-        <a href="/#approach" data-en="Approach" data-ar="منهجنا">Approach</a>
-        <a href="/#about" data-en="About" data-ar="عن الشركة">About</a>
+        <a href="/services/" data-en="Services" data-ar="الخدمات">Services</a>
+        <a href="/insights/" data-en="Insights" data-ar="المقالات">Insights</a>
+        <a href="/about/" data-en="About" data-ar="عن الشركة">About</a>
         <button class="language-toggle" type="button" data-language-toggle aria-label="Switch language">
           <span data-en="العربية" data-ar="English">العربية</span>
         </button>
-        <a class="button button-small" href="mailto:${site.email}" data-en="Talk to us" data-ar="تواصل معنا">Talk to us</a>
+        <a class="button button-small" href="/contact/" data-en="Talk to us" data-ar="تواصل معنا">Talk to us</a>
       </nav>
     </header>
   `;
@@ -63,14 +72,24 @@ function footer() {
         <p data-en="Practical technology for ambitious businesses." data-ar="تقنية عملية للشركات الطموحة.">Practical technology for ambitious businesses.</p>
       </div>
       <div class="footer-links">
-        <a href="mailto:${site.email}">${site.email}</a>
+        <a href="/contact/" data-en="Contact" data-ar="تواصل معنا">Contact</a>
+        <a href="/services/" data-en="Services" data-ar="الخدمات">Services</a>
+        <a href="/solutions/" data-en="Solutions" data-ar="الحلول">Solutions</a>
+        <a href="/pricing/" data-en="Pricing" data-ar="الأسعار">Pricing</a>
+        <a href="/faq/" data-en="FAQ" data-ar="الأسئلة الشائعة">FAQ</a>
+        <a href="/insights/" data-en="Insights" data-ar="المقالات">Insights</a>
         <a href="/#products" data-en="Products" data-ar="المنتجات">Products</a>
         <a href="/privacy/" data-en="Privacy" data-ar="الخصوصية">Privacy</a>
         <a href="/terms/" data-en="Terms" data-ar="الشروط">Terms</a>
+        <a href="/cookies/" data-en="Cookies" data-ar="ملفات الارتباط">Cookies</a>
         <a href="/security/" data-en="Security" data-ar="الأمان">Security</a>
       </div>
       <p class="copyright">© <span data-current-year></span> ScaleUp Tech</p>
     </footer>
+    <a class="whatsapp-float" href="https://wa.me/${site.whatsapp}?text=${encodeURIComponent("Hello ScaleUp Tech, I would like to discuss my needs.")}" target="_blank" rel="noopener noreferrer" aria-label="Chat with ScaleUp Tech on WhatsApp">
+      <span aria-hidden="true">◉</span>
+      <span data-en="WhatsApp" data-ar="واتساب">WhatsApp</span>
+    </a>
     <script src="/assets/site.js" defer></script>
   `;
 }
@@ -129,7 +148,7 @@ export function renderHome() {
             </p>
             <div class="hero-actions">
               <a class="button" href="#products" data-en="Explore products" data-ar="اكتشف المنتجات">Explore products</a>
-              <a class="text-link" href="mailto:${site.email}">
+              <a class="text-link" href="/contact/">
                 <span data-en="Discuss your needs" data-ar="ناقش احتياجاتك">Discuss your needs</span>
                 <span aria-hidden="true">↗</span>
               </a>
@@ -195,10 +214,87 @@ export function renderHome() {
           <h2 data-en="Technology should simplify growth—not become another system to manage." data-ar="يجب أن تُبسّط التقنية النمو — لا أن تصبح نظاماً إضافياً يحتاج إلى إدارة.">
             Technology should simplify growth—not become another system to manage.
           </h2>
-          <a class="button button-light" href="mailto:${site.email}" data-en="Build with us" data-ar="ابنِ معنا">Build with us</a>
+          <a class="button button-light" href="/contact/" data-en="Build with us" data-ar="ابنِ معنا">Build with us</a>
+        </section>
+        <section class="section insights-preview">
+          <div class="section-heading">
+            <div><p class="eyebrow" data-en="Practical insights" data-ar="مقالات عملية">Practical insights</p><h2 data-en="Make better technology decisions." data-ar="اتخذ قرارات تقنية أفضل.">Make better technology decisions.</h2></div>
+            <a class="text-link" href="/insights/"><span data-en="View all 16 articles" data-ar="شاهد جميع المقالات الـ16">View all 16 articles</span><span aria-hidden="true">↗</span></a>
+          </div>
+          <div class="article-grid">${articles.slice(0, 4).map(articleCard).join("")}</div>
         </section>
       </main>
     `,
+  });
+}
+
+function articleCard(article) {
+  const product = products.find((item) => item.slug === article.product);
+  return html`<article class="article-card">
+    <p class="eyebrow">${product?.name || article.product}</p>
+    <h2><a href="/insights/${article.slug}/" data-en="${article.title.en}" data-ar="${article.title.ar}">${article.title.en}</a></h2>
+    <p data-en="${article.description.en}" data-ar="${article.description.ar}">${article.description.en}</p>
+    <small><span data-en="${article.readTime} min read" data-ar="قراءة ${article.readTime} دقائق">${article.readTime} min read</span></small>
+  </article>`;
+}
+
+export function renderMarketing(page) {
+  const items = page.items.map((item, index) => html`<article class="content-card"><span>0${index + 1}</span><p data-en="${item.en}" data-ar="${item.ar}">${item.en}</p></article>`).join("");
+  return shell({
+    title: `${page.title.en} | ScaleUp Tech`,
+    description: page.description.en,
+    path: `/${page.slug}/`,
+    body: html`<main id="main" class="content-page">
+      <header class="content-hero"><p class="eyebrow">ScaleUp Tech</p><h1 data-en="${page.title.en}" data-ar="${page.title.ar}">${page.title.en}</h1><p data-en="${page.description.en}" data-ar="${page.description.ar}">${page.description.en}</p></header>
+      <section class="section"><div class="content-grid">${items}</div></section>
+      <section class="contact-band"><h2 data-en="Ready for a practical next step?" data-ar="هل أنت مستعد للخطوة العملية التالية؟">Ready for a practical next step?</h2><a class="button button-light" href="/contact/" data-en="Contact ScaleUp Tech" data-ar="تواصل مع ScaleUp Tech">Contact ScaleUp Tech</a></section>
+    </main>`,
+  });
+}
+
+export function renderContact() {
+  return shell({
+    title: "Contact ScaleUp Tech | Sales, Support and WhatsApp",
+    description: "Contact ScaleUp Tech by sales email, support email, security email, phone, or WhatsApp.",
+    path: "/contact/",
+    body: html`<main id="main" class="content-page">
+      <header class="content-hero"><p class="eyebrow" data-en="Contact" data-ar="التواصل">Contact</p><h1 data-en="Start with the right conversation." data-ar="ابدأ بالمحادثة الصحيحة.">Start with the right conversation.</h1><p data-en="Choose the channel that matches your request. We support Arabic and English." data-ar="اختر القناة المناسبة لطلبك. ندعم العربية والإنجليزية.">Choose the channel that matches your request. We support Arabic and English.</p></header>
+      <section class="section contact-grid">
+        <a class="contact-card" href="mailto:${site.email}"><span data-en="Sales and projects" data-ar="المبيعات والمشاريع">Sales and projects</span><strong>${site.email}</strong></a>
+        <a class="contact-card" href="mailto:${site.supportEmail}"><span data-en="Product support" data-ar="دعم المنتجات">Product support</span><strong>${site.supportEmail}</strong></a>
+        <a class="contact-card" href="mailto:${site.securityEmail}"><span data-en="Security reports" data-ar="بلاغات الأمان">Security reports</span><strong>${site.securityEmail}</strong></a>
+        <a class="contact-card" href="https://wa.me/${site.whatsapp}" target="_blank" rel="noopener noreferrer"><span data-en="WhatsApp and phone" data-ar="واتساب والهاتف">WhatsApp and phone</span><strong>${site.phone}</strong></a>
+      </section>
+    </main>`,
+  });
+}
+
+export function renderInsights() {
+  return shell({
+    title: "Insights | ScaleUp Tech",
+    description: "Practical bilingual guides for careers, CRM, customer experience operations, and pharmacy management.",
+    path: "/insights/",
+    body: html`<main id="main" class="content-page"><header class="content-hero"><p class="eyebrow" data-en="Insights" data-ar="المقالات">Insights</p><h1 data-en="Useful ideas for better operations." data-ar="أفكار مفيدة لعمليات أفضل.">Useful ideas for better operations.</h1><p data-en="Sixteen practical guides—four for every ScaleUp Tech product." data-ar="ستة عشر دليلاً عملياً — أربعة لكل منتج من ScaleUp Tech.">Sixteen practical guides—four for every ScaleUp Tech product.</p></header><section class="section"><div class="article-grid">${articles.map(articleCard).join("")}</div></section></main>`,
+  });
+}
+
+export function renderArticle(article) {
+  const product = products.find((item) => item.slug === article.product);
+  return shell({
+    title: `${article.title.en} | ScaleUp Tech`,
+    description: article.description.en,
+    path: `/insights/${article.slug}/`,
+    body: html`<main id="main" class="article-page">
+      <header class="article-hero"><a class="back-link" href="/insights/" data-en="← All insights" data-ar="← كل المقالات">← All insights</a><p class="eyebrow">${product?.name || article.product}</p><h1 data-en="${article.title.en}" data-ar="${article.title.ar}">${article.title.en}</h1><p data-en="${article.description.en}" data-ar="${article.description.ar}">${article.description.en}</p></header>
+      <article class="article-body">
+        <h2 data-en="Start with the operating outcome" data-ar="ابدأ بالنتيجة التشغيلية">Start with the operating outcome</h2>
+        <p data-en="Define the decision, behavior, or customer outcome that must improve. A clear baseline prevents activity from being confused with progress." data-ar="حدد القرار أو السلوك أو نتيجة العميل المطلوب تحسينها. يمنع خط الأساس الواضح الخلط بين النشاط والتقدم.">Define the decision, behavior, or customer outcome that must improve. A clear baseline prevents activity from being confused with progress.</p>
+        <h2 data-en="Build the smallest complete workflow" data-ar="ابنِ أصغر مسار عمل متكامل">Build the smallest complete workflow</h2>
+        <p data-en="Map ownership, inputs, exceptions, and the next action. Remove duplicate steps before automating them, then make status visible to everyone responsible." data-ar="حدد الملكية والمدخلات والاستثناءات والخطوة التالية. أزل الخطوات المكررة قبل أتمتتها واجعل الحالة مرئية لكل مسؤول.">Map ownership, inputs, exceptions, and the next action. Remove duplicate steps before automating them, then make status visible to everyone responsible.</p>
+        <h2 data-en="Measure, learn, and improve" data-ar="قس وتعلم وحسّن">Measure, learn, and improve</h2>
+        <p data-en="Review a small set of outcome and quality measures on a fixed cadence. Investigate exceptions, protect human judgment, and change the system only when evidence supports it." data-ar="راجع مجموعة صغيرة من مؤشرات النتائج والجودة بوتيرة ثابتة. افحص الاستثناءات وحافظ على القرار البشري ولا تغير النظام إلا عندما تدعم الأدلة ذلك.">Review a small set of outcome and quality measures on a fixed cadence. Investigate exceptions, protect human judgment, and change the system only when evidence supports it.</p>
+      </article>
+    </main>`,
   });
 }
 
