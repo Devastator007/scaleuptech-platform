@@ -213,9 +213,63 @@ button { font: inherit; }
 .legal-content h2 { margin: 0 0 1rem; font-size: clamp(1.5rem, 3vw, 2.2rem); letter-spacing: -.035em; }
 .legal-content p { margin: 0; color: var(--ink-soft); line-height: 1.85; }
 
-[dir="rtl"] { font-family: "Alexandria", "Manrope", system-ui, sans-serif; }
+[dir="rtl"] {
+  font-family: "Alexandria", "Manrope", system-ui, sans-serif;
+  font-kerning: normal;
+}
+[dir="rtl"] body { line-height: 1.85; }
 [dir="rtl"] .site-header, [dir="rtl"] .hero, [dir="rtl"] .section, [dir="rtl"] .site-footer, [dir="rtl"] .product-hero { text-align: right; }
-[dir="rtl"] .hero h1, [dir="rtl"] .section-heading h2, [dir="rtl"] .approach-copy h2, [dir="rtl"] .statement-section h2, [dir="rtl"] .product-purpose h2, [dir="rtl"] .product-hero h1 { letter-spacing: -.025em; }
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] .contact-card strong,
+[dir="rtl"] .related-grid a {
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+[dir="rtl"] .hero h1 {
+  max-width: 13ch;
+  font-size: clamp(3.25rem, 6.1vw, 6.25rem);
+  line-height: 1.22;
+  font-weight: 650;
+}
+[dir="rtl"] .section-heading h2,
+[dir="rtl"] .approach-copy h2,
+[dir="rtl"] .statement-section h2,
+[dir="rtl"] .product-purpose h2 {
+  font-size: clamp(2.45rem, 4.35vw, 4.5rem);
+  line-height: 1.28;
+  font-weight: 600;
+}
+[dir="rtl"] .approach-copy h2 { max-width: 12ch; }
+[dir="rtl"] .statement-section h2 { max-width: 18ch; }
+[dir="rtl"] .content-hero h1,
+[dir="rtl"] .article-hero h1 {
+  max-width: 14ch;
+  font-size: clamp(3rem, 6.25vw, 6rem);
+  line-height: 1.24;
+  font-weight: 600;
+}
+[dir="rtl"] .product-hero h1 {
+  font-size: clamp(3.5rem, 7vw, 7rem);
+  line-height: 1.18;
+  font-weight: 650;
+}
+[dir="rtl"] .product-hero h2 {
+  font-family: "Alexandria", "Manrope", system-ui, sans-serif;
+  line-height: 1.5;
+}
+[dir="rtl"] .legal-hero h1,
+[dir="rtl"] .account-welcome h1,
+[dir="rtl"] .dashboard-head h1 {
+  letter-spacing: 0;
+  line-height: 1.25;
+  text-wrap: balance;
+}
+[dir="rtl"] .eyebrow {
+  letter-spacing: 0;
+  line-height: 1.5;
+}
 [dir="rtl"] .product-card { border-right: 0; border-left: 1px solid var(--line); }
 [dir="rtl"] .product-card:last-child { border-left: 0; }
 [dir="rtl"] .related-grid a { padding: 2rem 0 2rem 1rem; }
@@ -261,6 +315,29 @@ button { font: inherit; }
   .legal-nav { position: static; }
   .related-grid a:first-child { margin: 0; }
   [dir="rtl"] .related-grid a:first-child { margin: 0; }
+  [dir="rtl"] .hero h1 {
+    max-width: none;
+    font-size: clamp(2.7rem, 12.5vw, 4.25rem);
+    line-height: 1.28;
+  }
+  [dir="rtl"] .section-heading h2,
+  [dir="rtl"] .approach-copy h2,
+  [dir="rtl"] .statement-section h2,
+  [dir="rtl"] .product-purpose h2 {
+    max-width: none;
+    font-size: clamp(2.2rem, 10vw, 3.45rem);
+    line-height: 1.32;
+  }
+  [dir="rtl"] .content-hero h1,
+  [dir="rtl"] .article-hero h1,
+  [dir="rtl"] .product-hero h1,
+  [dir="rtl"] .legal-hero h1,
+  [dir="rtl"] .account-welcome h1,
+  [dir="rtl"] .dashboard-head h1 {
+    max-width: none;
+    font-size: clamp(2.45rem, 11vw, 3.75rem);
+    line-height: 1.3;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

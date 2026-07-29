@@ -92,4 +92,16 @@ if (articles.length !== products.length * 4) {
   throw new Error(`Expected four articles per product; found ${articles.length} for ${products.length} products`);
 }
 
+const styles = await readFile(resolve(root, "dist/assets/styles.css"), "utf8");
+for (const marker of [
+  '[dir="rtl"] body { line-height: 1.85; }',
+  '[dir="rtl"] .hero h1 {',
+  "line-height: 1.22;",
+  "text-wrap: balance;",
+  "letter-spacing: 0;",
+  "font-size: clamp(2.7rem, 12.5vw, 4.25rem);",
+]) {
+  if (!styles.includes(marker)) throw new Error(`RTL typography system is missing ${marker}`);
+}
+
 console.log(`Validated ${pages.length} pages and ${requiredFiles.length} required files`);

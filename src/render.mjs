@@ -1,7 +1,7 @@
 import { articles, legalPages, marketingPages, products, site } from "./content.mjs";
 
 const html = String.raw;
-const assetVersion = "20260729-03";
+const assetVersion = "20260729-04";
 
 function head({ title, description, path = "/" }) {
   const canonical = `${site.url}${path}`;
