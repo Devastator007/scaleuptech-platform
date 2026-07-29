@@ -9,6 +9,7 @@ function head({ title, description, path = "/" }) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>${title}</title>
     <meta name="description" content="${description}">
+    ${path === "/account/" || path === "/admin/" ? '<meta name="robots" content="noindex,nofollow">' : '<meta name="robots" content="index,follow,max-image-preview:large">'}
     <meta name="theme-color" content="#081a16">
     <link rel="icon" href="/favicon.svg" type="image/svg+xml">
     <link rel="apple-touch-icon" href="/apple-touch-icon.svg">
@@ -50,11 +51,14 @@ function header() {
       <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
         <a href="/#products" data-en="Products" data-ar="المنتجات">Products</a>
         <a href="/services/" data-en="Services" data-ar="الخدمات">Services</a>
+        <a href="/solutions/" data-en="Solutions" data-ar="الحلول">Solutions</a>
+        <a href="/pricing/" data-en="Pricing" data-ar="الأسعار">Pricing</a>
         <a href="/insights/" data-en="Insights" data-ar="المقالات">Insights</a>
         <a href="/about/" data-en="About" data-ar="عن الشركة">About</a>
         <button class="language-toggle" type="button" data-language-toggle aria-label="Switch language">
           <span data-en="العربية" data-ar="English">العربية</span>
         </button>
+        <a href="/account/" data-en="Sign in" data-ar="تسجيل الدخول">Sign in</a>
         <a class="button button-small" href="/contact/" data-en="Talk to us" data-ar="تواصل معنا">Talk to us</a>
       </nav>
     </header>
@@ -295,6 +299,20 @@ export function renderArticle(article) {
         <p data-en="Review a small set of outcome and quality measures on a fixed cadence. Investigate exceptions, protect human judgment, and change the system only when evidence supports it." data-ar="راجع مجموعة صغيرة من مؤشرات النتائج والجودة بوتيرة ثابتة. افحص الاستثناءات وحافظ على القرار البشري ولا تغير النظام إلا عندما تدعم الأدلة ذلك.">Review a small set of outcome and quality measures on a fixed cadence. Investigate exceptions, protect human judgment, and change the system only when evidence supports it.</p>
       </article>
     </main>`,
+  });
+}
+
+export function renderAccountPage(admin = false) {
+  const path = admin ? "/admin/" : "/account/";
+  const title = admin ? "Admin | ScaleUp Tech" : "Account | ScaleUp Tech";
+  return shell({
+    title,
+    description: admin
+      ? "Protected administration for ScaleUp Tech customers, subscriptions, and manual payment approvals."
+      : "Register, sign in, manage subscriptions, and submit manual payments for ScaleUp Tech products.",
+    path,
+    body: html`<main id="main" class="account-page"><div class="account-app" data-account-app="${admin ? "admin" : "account"}"><section class="account-card"><p>Loading secure account…</p></section></div></main>
+      <script src="/assets/account.js" defer></script>`,
   });
 }
 

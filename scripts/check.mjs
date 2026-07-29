@@ -8,6 +8,13 @@ const requiredFiles = [
   "dist/index.html",
   "dist/assets/styles.css",
   "dist/assets/site.js",
+  "dist/assets/account.js",
+  "dist/api/bootstrap.php",
+  "dist/api/account.php",
+  "dist/account/index.html",
+  "dist/admin/index.html",
+  "dist/product/job-autoapply/index.html",
+  "dist/product/scale-cx/index.html",
   "dist/.htaccess",
   "dist/robots.txt",
   "dist/sitemap.xml",
@@ -32,6 +39,8 @@ const pages = await Promise.all(
     ...marketingPages.map((page) => `dist/${page.slug}/index.html`),
     "dist/contact/index.html",
     "dist/insights/index.html",
+    "dist/account/index.html",
+    "dist/admin/index.html",
     ...articles.map((article) => `dist/insights/${article.slug}/index.html`),
   ]
     .map(async (file) => ({ file, source: await readFile(resolve(root, file), "utf8") })),
@@ -54,6 +63,21 @@ for (const { file, source } of pages) {
 const contact = await readFile(resolve(root, "dist/contact/index.html"), "utf8");
 for (const address of [site.email, site.supportEmail, site.securityEmail]) {
   if (!contact.includes(`mailto:${address}`)) throw new Error(`Contact page is missing ${address}`);
+}
+
+const accountApi = await readFile(resolve(root, "dist/api/account.php"), "utf8");
+const bootstrap = await readFile(resolve(root, "dist/api/bootstrap.php"), "utf8");
+for (const marker of [
+  "password_hash(", "password_verify(", "session_regenerate_id(true)",
+  "require_csrf()", "require_user(true)", "'customer'", "admin_payment",
+]) {
+  if (!accountApi.includes(marker) && !bootstrap.includes(marker)) throw new Error(`Account backend is missing ${marker}`);
+}
+for (const forbidden of ["admin_email()", "role=\"admin\"", "SUPABASE_SERVICE_ROLE_KEY", "DATABASE_URL"]) {
+  if (accountApi.includes(forbidden) || bootstrap.includes(forbidden)) throw new Error(`Account backend contains forbidden pattern ${forbidden}`);
+}
+if (!bootstrap.includes("'secure' => true") || !bootstrap.includes("'httponly' => true")) {
+  throw new Error("Account session cookies are not secure");
 }
 
 if (articles.length !== products.length * 4) {

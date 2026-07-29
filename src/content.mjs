@@ -78,6 +78,23 @@ export const products = [
       ar: ["رؤية المخزون", "أداء الفروع", "ضوابط التشغيل"],
     },
   },
+  {
+    slug: "sales-flow-erp",
+    name: "SalesFlow ERP",
+    eyebrow: { en: "Business operations", ar: "عمليات الأعمال" },
+    title: {
+      en: "Connect sales, inventory, purchasing, and reporting.",
+      ar: "اربط المبيعات والمخزون والمشتريات والتقارير.",
+    },
+    description: {
+      en: "A practical ERP foundation that replaces disconnected spreadsheets with controlled workflows and reliable operating visibility.",
+      ar: "أساس ERP عملي يستبدل جداول البيانات المنفصلة بمسارات عمل مضبوطة ورؤية تشغيلية موثوقة.",
+    },
+    highlights: {
+      en: ["Sales and purchasing", "Inventory control", "Operational reporting"],
+      ar: ["المبيعات والمشتريات", "ضبط المخزون", "التقارير التشغيلية"],
+    },
+  },
 ];
 
 export const legalPages = [
@@ -309,6 +326,10 @@ const articleSeeds = [
   ["pharmacy-manager", "Reduce stock-outs without overstocking", "قلل نفاد المخزون دون تخزين زائد"],
   ["pharmacy-manager", "Build a useful daily pharmacy dashboard", "أنشئ لوحة متابعة يومية مفيدة للصيدلية"],
   ["pharmacy-manager", "Standardize branch controls without slowing teams", "وحّد ضوابط الفروع دون إبطاء الفرق"],
+  ["sales-flow-erp", "Know when your business is ready for ERP", "اعرف متى يصبح عملك جاهزاً لنظام ERP"],
+  ["sales-flow-erp", "Connect purchasing to real inventory demand", "اربط المشتريات بالطلب الفعلي على المخزون"],
+  ["sales-flow-erp", "Replace spreadsheet handoffs with controlled workflows", "استبدل تسليمات جداول البيانات بمسارات عمل مضبوطة"],
+  ["sales-flow-erp", "Design ERP reports leaders can act on", "صمم تقارير ERP يستطيع القادة التصرف بناءً عليها"],
 ];
 
 export const articles = articleSeeds.map(([product, en, ar], index) => ({

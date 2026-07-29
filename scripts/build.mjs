@@ -2,7 +2,7 @@ import { cp, mkdir, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { articles, legalPages, marketingPages, products, site } from "../src/content.mjs";
-import { renderArticle, renderContact, renderHome, renderInsights, renderLegal, renderMarketing, renderProduct } from "../src/render.mjs";
+import { renderAccountPage, renderArticle, renderContact, renderHome, renderInsights, renderLegal, renderMarketing, renderProduct } from "../src/render.mjs";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = resolve(root, "dist");
@@ -15,6 +15,12 @@ for (const product of products) {
   const productDirectory = resolve(dist, "product", product.slug);
   await mkdir(productDirectory, { recursive: true });
   await writeFile(resolve(productDirectory, "index.html"), renderProduct(product));
+}
+
+for (const [legacySlug, currentSlug] of [["job-autoapply", "jobpilot"], ["scale-cx", "scalecx"]]) {
+  const legacyDirectory = resolve(dist, "product", legacySlug);
+  await mkdir(legacyDirectory, { recursive: true });
+  await writeFile(resolve(legacyDirectory, "index.html"), `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${site.url}/product/${currentSlug}/"><meta http-equiv="refresh" content="0;url=/product/${currentSlug}/"><title>Redirecting | ScaleUp Tech</title></head><body><a href="/product/${currentSlug}/">Continue</a></body></html>`);
 }
 
 for (const page of legalPages) {
@@ -42,6 +48,14 @@ for (const article of articles) {
 
 await cp(resolve(root, "src", "styles.css"), resolve(dist, "assets", "styles.css"));
 await cp(resolve(root, "src", "site.js"), resolve(dist, "assets", "site.js"));
+await cp(resolve(root, "src", "account.js"), resolve(dist, "assets", "account.js"));
+await mkdir(resolve(dist, "api"), { recursive: true });
+await cp(resolve(root, "src", "backend", "bootstrap.php"), resolve(dist, "api", "bootstrap.php"));
+await cp(resolve(root, "src", "backend", "account.php"), resolve(dist, "api", "account.php"));
+await mkdir(resolve(dist, "account"), { recursive: true });
+await writeFile(resolve(dist, "account", "index.html"), renderAccountPage(false));
+await mkdir(resolve(dist, "admin"), { recursive: true });
+await writeFile(resolve(dist, "admin", "index.html"), renderAccountPage(true));
 const favicon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><rect width="64" height="64" rx="16" fill="#081a16"/><path d="M43 19H28c-6 0-10 3-10 8 0 12 24 5 24 13 0 3-3 5-8 5H19" fill="none" stroke="#c9f564" stroke-width="7" stroke-linecap="round"/></svg>`;
 await writeFile(resolve(dist, "favicon.svg"), favicon);
 await writeFile(resolve(dist, "apple-touch-icon.svg"), favicon);
@@ -62,11 +76,13 @@ const routes = [
   ...marketingPages.map((page) => `/${page.slug}/`),
   "/contact/",
   "/insights/",
+  "/account/",
+  "/admin/",
   ...articles.map((article) => `/insights/${article.slug}/`),
 ];
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes.map((route) => `  <url><loc>${site.url}${route}</loc></url>`).join("\n")}
+${routes.filter((route) => !["/account/", "/admin/"].includes(route)).map((route) => `  <url><loc>${site.url}${route}</loc></url>`).join("\n")}
 </urlset>
 `;
 
@@ -79,6 +95,8 @@ await writeFile(resolve(dist, "_headers"), `/*
 `);
 await writeFile(resolve(dist, ".htaccess"), `Options -Indexes
 DirectoryIndex index.html
+
+RedirectMatch 404 ^/storage(?:/|$)
 
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"

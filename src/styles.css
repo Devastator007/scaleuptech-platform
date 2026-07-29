@@ -37,8 +37,8 @@ button { font: inherit; }
 .brand { display: inline-flex; align-items: center; gap: .65rem; text-decoration: none; font-size: 1.05rem; letter-spacing: -.03em; }
 .brand strong { font-weight: 750; }
 .brand-mark { display: grid; place-items: center; width: 2.15rem; height: 2.15rem; border-radius: .65rem; background: var(--ink); color: var(--lime); font-weight: 800; }
-.site-nav { display: flex; align-items: center; gap: clamp(1rem, 2.5vw, 2.25rem); }
-.site-nav > a:not(.button) { text-decoration: none; font-size: .9rem; font-weight: 600; }
+.site-nav { display: flex; align-items: center; gap: clamp(.7rem, 1.3vw, 1.35rem); }
+.site-nav > a:not(.button) { text-decoration: none; font-size: .82rem; font-weight: 650; }
 .site-nav > a:not(.button):hover { text-decoration: underline; text-underline-offset: .4rem; }
 .language-toggle { border: 0; background: transparent; padding: .5rem; cursor: pointer; font-weight: 700; color: var(--ink-soft); }
 .menu-toggle { display: none; width: 2.8rem; height: 2.8rem; border: 1px solid var(--line); background: transparent; border-radius: 50%; align-items: center; justify-content: center; flex-direction: column; gap: .35rem; }
@@ -134,6 +134,40 @@ button { font: inherit; }
 .article-body h2 { margin: 3rem 0 1rem; font-size: clamp(1.6rem, 3vw, 2.4rem); letter-spacing: -.035em; }
 .article-body p { color: var(--ink-soft); font-size: 1.06rem; line-height: 1.9; }
 
+.account-page { min-height: 70vh; padding: clamp(3rem, 7vw, 7rem) clamp(1.25rem, 6vw, 7rem); background: var(--paper-light); }
+.account-app { max-width: 76rem; margin: 0 auto; }
+.account-welcome { max-width: 58rem; margin-bottom: 3rem; }
+.account-welcome h1, .dashboard-head h1 { margin: 0; font-size: clamp(2.8rem, 6vw, 5.5rem); line-height: .96; letter-spacing: -.065em; }
+.account-welcome > p:last-child, .dashboard-head p { max-width: 44rem; color: var(--ink-soft); line-height: 1.7; }
+.auth-grid, .dashboard-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1rem; }
+.account-card { padding: clamp(1.4rem, 3vw, 2.5rem); border: 1px solid var(--line); border-radius: var(--radius); background: white; box-shadow: 0 .75rem 2.5rem rgba(8,26,22,.06); }
+.account-card h1, .account-card h2 { margin: 0 0 1.5rem; letter-spacing: -.04em; }
+.account-card form { display: grid; gap: 1rem; }
+.account-card label { display: grid; gap: .45rem; color: var(--ink-soft); font-size: .84rem; font-weight: 750; }
+.account-card input, .account-card select, .account-card textarea { width: 100%; min-height: 3.15rem; padding: .75rem .9rem; border: 1px solid var(--line); border-radius: .7rem; background: var(--paper-light); color: var(--ink); font: inherit; }
+.account-card textarea { min-height: 6rem; resize: vertical; }
+.account-card input:focus, .account-card select:focus, .account-card textarea:focus { outline: 3px solid rgba(53,123,102,.2); border-color: #357b66; }
+.password-input { display: grid; grid-template-columns: 1fr auto; align-items: center; border: 1px solid var(--line); border-radius: .7rem; background: var(--paper-light); overflow: hidden; }
+.password-input input { border: 0; border-radius: 0; background: transparent; }
+.password-input button, .text-button { border: 0; background: transparent; color: #26735c; cursor: pointer; font-weight: 800; }
+.text-button { justify-self: start; padding: .5rem 0; }
+.account-message { grid-column: 1 / -1; }
+.form-message { min-height: 1.5rem; margin: 1rem 0 0; font-weight: 700; }
+.form-message.is-error { color: #a62d2d; }
+.form-message.is-success { color: #176b4a; }
+.dashboard-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 2rem; margin-bottom: 3rem; }
+.dashboard-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+.button-quiet { border: 1px solid var(--line); background: transparent; color: var(--ink); }
+.account-table { margin-top: 1rem; }
+.table-wrap { overflow-x: auto; }
+.account-table table { width: 100%; border-collapse: collapse; }
+.account-table th, .account-table td { padding: .9rem; border-bottom: 1px solid var(--line); text-align: start; white-space: nowrap; }
+.account-table th { color: var(--ink-soft); font-size: .75rem; text-transform: uppercase; letter-spacing: .08em; }
+.account-table button { margin: .15rem; padding: .5rem .75rem; border: 1px solid var(--line); border-radius: 999px; background: var(--paper); cursor: pointer; font-weight: 750; }
+.status { display: inline-flex; padding: .25rem .6rem; border-radius: 999px; background: var(--paper); font-size: .75rem; font-weight: 800; text-transform: capitalize; }
+.status-active { background: #dff6e7; color: #176b4a; }
+.status-pending { background: #fff1c7; color: #775600; }
+
 .product-hero { padding: 2rem clamp(1.25rem, 6vw, 7rem) clamp(5rem, 9vw, 9rem); }
 .back-link { display: inline-block; margin-bottom: clamp(4rem, 9vw, 8rem); color: var(--ink-soft); text-decoration: none; font-weight: 700; font-size: .85rem; }
 .product-hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: clamp(3rem, 9vw, 9rem); align-items: end; }
@@ -174,7 +208,7 @@ button { font: inherit; }
 [dir="rtl"] .related-grid a { padding: 2rem 0 2rem 1rem; }
 [dir="rtl"] .related-grid a:first-child { margin-right: 0; margin-left: 2rem; }
 
-@media (max-width: 920px) {
+@media (max-width: 1180px) {
   .menu-toggle { display: flex; z-index: 12; }
   .site-nav { position: fixed; z-index: 10; inset: 0; display: none; flex-direction: column; align-items: stretch; justify-content: center; padding: 5rem 2rem; background: var(--paper-light); font-size: 1.25rem; }
   .site-nav.is-open { display: flex; }
@@ -205,6 +239,8 @@ button { font: inherit; }
   .copyright { grid-column: auto; margin-top: 1rem; }
   .related-grid { grid-template-columns: 1fr; }
   .content-grid, .contact-grid, .article-grid { grid-template-columns: 1fr; }
+  .auth-grid, .dashboard-grid { grid-template-columns: 1fr; }
+  .dashboard-head { align-items: flex-start; flex-direction: column; }
   .contact-band { align-items: flex-start; flex-direction: column; }
   .whatsapp-float span:last-child { display: none; }
   .whatsapp-float { width: 3.25rem; padding: 0; justify-content: center; }
