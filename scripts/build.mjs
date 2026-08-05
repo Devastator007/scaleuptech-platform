@@ -1,4 +1,4 @@
-import { cp, mkdir, rm, writeFile } from "node:fs/promises";
+import { cp, mkdir, rm, writeFile, readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { articles, legalPages, marketingPages, products, site } from "../src/content.mjs";
@@ -6,6 +6,62 @@ import { renderAccountPage, renderArticle, renderContact, renderHome, renderInsi
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = resolve(root, "dist");
+
+function routeFile(route) {
+  return route === "/" ? resolve(dist, "index.html") : resolve(dist, route.replace(/^\//, ""), "index.html");
+}
+
+function localizedPath(locale, route) {
+  return `/${locale}${route === "/" ? "/" : route}`;
+}
+
+function localizeInternalLinks(source, locale) {
+  return source.replace(/href="\/([^"?#]*)([?#][^"]*)?"/g, (match, target = "", suffix = "") => {
+    const path = `/${target}`;
+    if (
+      path === "/en/" || path.startsWith("/en/") ||
+      path === "/ar/" || path.startsWith("/ar/") ||
+      path.startsWith("/assets/") || path.startsWith("/api/") || path.startsWith("/app/") ||
+      path.startsWith("/favicon") || path.startsWith("/scaleup-logo") || path.startsWith("/apple-touch") ||
+      path === "/manifest.webmanifest" || path === "/sitemap.xml" || path === "/robots.txt" ||
+      /\.[a-z0-9]+$/i.test(path)
+    ) return match;
+    return `href="/${locale}${path}${suffix}"`;
+  });
+}
+
+function localizedHtml(source, route, locale) {
+  const isArabic = locale === "ar";
+  const path = localizedPath(locale, route);
+  const canonical = `${site.url}${path}`;
+  const alternatePath = route === "/" ? "/" : route;
+  const alternates = [
+    `<link rel="canonical" href="${canonical}">`,
+    `<link rel="alternate" hreflang="en" href="${site.url}/en${alternatePath}">`,
+    `<link rel="alternate" hreflang="ar-EG" href="${site.url}/ar${alternatePath}">`,
+    `<link rel="alternate" hreflang="x-default" href="${site.url}/en${alternatePath}">`,
+  ].join("\n    ");
+
+  return localizeInternalLinks(source, locale)
+    .replace(/<html lang="en" dir="ltr">/, `<html lang="${isArabic ? "ar-EG" : "en"}" dir="${isArabic ? "rtl" : "ltr"}">`)
+    .replace(/<link rel="canonical" href="[^"]+">/, alternates)
+    .replace(/<meta property="og:url" content="[^"]+">/, `<meta property="og:url" content="${canonical}">`);
+}
+
+function redirectPage(destination) {
+  return `<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="robots" content="noindex,nofollow">
+  <link rel="canonical" href="${site.url}${destination}">
+  <meta http-equiv="refresh" content="0;url=${destination}">
+  <title>Redirecting | ScaleUp Tech</title>
+</head>
+<body><a href="${destination}">Continue to ScaleUp Tech</a></body>
+</html>`;
+}
 
 await rm(dist, { recursive: true, force: true });
 await mkdir(resolve(dist, "assets"), { recursive: true });
@@ -20,7 +76,7 @@ for (const product of products) {
 for (const [legacySlug, currentSlug] of [["job-autoapply", "jobpilot"], ["scale-cx", "scalecx"]]) {
   const legacyDirectory = resolve(dist, "product", legacySlug);
   await mkdir(legacyDirectory, { recursive: true });
-  await writeFile(resolve(legacyDirectory, "index.html"), `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="robots" content="noindex"><link rel="canonical" href="${site.url}/product/${currentSlug}/"><meta http-equiv="refresh" content="0;url=/product/${currentSlug}/"><title>Redirecting | ScaleUp Tech</title></head><body><a href="/product/${currentSlug}/">Continue</a></body></html>`);
+  await writeFile(resolve(legacyDirectory, "index.html"), redirectPage(`/en/product/${currentSlug}/`));
 }
 
 for (const page of legalPages) {
@@ -92,14 +148,14 @@ await writeFile(resolve(dist, "apple-touch-icon.svg"), favicon);
 await writeFile(resolve(dist, "manifest.webmanifest"), JSON.stringify({
   name: site.brand,
   short_name: "ScaleUp",
-  start_url: "/",
+  start_url: "/en/",
   display: "standalone",
   background_color: "#f3f0e8",
   theme_color: "#081a16",
   icons: [{ src: "/favicon-180.png", sizes: "180x180", type: "image/png", purpose: "any" }],
 }, null, 2));
 
-const routes = [
+const sourceRoutes = [
   "/",
   ...products.map((product) => `/product/${product.slug}/`),
   ...legalPages.map((page) => `/${page.slug}/`),
@@ -108,12 +164,24 @@ const routes = [
   "/insights/",
   "/account/",
   "/admin/",
-  "/app/jobpilot/",
   ...articles.map((article) => `/insights/${article.slug}/`),
 ];
+
+for (const locale of ["en", "ar"]) {
+  for (const route of sourceRoutes) {
+    const source = await readFile(routeFile(route), "utf8");
+    const output = route === "/" ? resolve(dist, locale, "index.html") : resolve(dist, locale, route.replace(/^\//, ""), "index.html");
+    await mkdir(dirname(output), { recursive: true });
+    await writeFile(output, localizedHtml(source, route, locale));
+  }
+}
+
+await writeFile(resolve(dist, "index.html"), redirectPage("/en/"));
+
+const sitemapRoutes = sourceRoutes.filter((route) => !["/account/", "/admin/"].includes(route));
 const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${routes.filter((route) => !["/account/", "/admin/"].includes(route)).map((route) => `  <url><loc>${site.url}${route}</loc></url>`).join("\n")}
+${["en", "ar"].flatMap((locale) => sitemapRoutes.map((route) => `  <url><loc>${site.url}${localizedPath(locale, route)}</loc></url>`)).join("\n")}
 </urlset>
 `;
 
@@ -126,25 +194,32 @@ await writeFile(resolve(dist, "_headers"), `/*
 `);
 await writeFile(resolve(dist, ".htaccess"), `Options -Indexes
 DirectoryIndex index.html
+RewriteEngine On
 
 RedirectMatch 404 ^/storage(?:/|$)
+RewriteRule ^$ /en/ [R=301,L,NE]
+RewriteRule ^EN(?:/(.*))?$ /en/$1 [R=301,L,NE,NC]
+RewriteRule ^AR(?:/(.*))?$ /ar/$1 [R=301,L,NE,NC]
+RewriteRule ^(product|privacy|terms|cookies|security|about|services|solutions|pricing|faq|contact|insights|account|admin)(/.*)?$ /en/$1$2 [R=301,L,NE]
 
 <IfModule mod_headers.c>
   Header always set X-Content-Type-Options "nosniff"
   Header always set Referrer-Policy "strict-origin-when-cross-origin"
   Header always set Permissions-Policy "camera=(), microphone=(), geolocation=()"
-  <FilesMatch "\.(?:html|css|js)$">
+  <FilesMatch "\.(?:html|css|js|xml)$">
     Header set Cache-Control "no-cache, must-revalidate"
   </FilesMatch>
 </IfModule>
 
 <IfModule mod_expires.c>
   ExpiresActive On
+  ExpiresByType text/html "access plus 0 seconds"
   ExpiresByType text/css "access plus 0 seconds"
   ExpiresByType application/javascript "access plus 0 seconds"
+  ExpiresByType application/xml "access plus 0 seconds"
   ExpiresByType image/png "access plus 30 days"
   ExpiresByType image/webp "access plus 30 days"
 </IfModule>
 `);
 
-console.log(`Built ${routes.length} routes in dist/`);
+console.log(`Built ${sourceRoutes.length * 2} localized routes in dist/`);
